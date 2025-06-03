@@ -1,33 +1,5 @@
 # Anki®
 
-[![Build status](https://badge.buildkite.com/c9edf020a4aec976f9835e54751cc5409d843adbb66d043bd3.svg?branch=main)](https://buildkite.com/ankitects/anki-ci)
+## Let my spaces be
 
-This repo contains the source code for the computer version of
-[Anki](https://apps.ankiweb.net).
-
-# About
-
-Anki is a spaced repetition program. Please see the [website](https://apps.ankiweb.net) to learn more.
-
-# Getting Started
-
-### Anki Betas
-
-If you'd like to try development builds of Anki but don't feel comfortable
-building the code, please see [Anki betas](https://betas.ankiweb.net/)
-
-### Developing
-
-For more information on building and developing, please see [Development](./docs/development.md).
-
-### Contributing
-
-Want to contribute to Anki? Check out the [Contribution Guidelines](./docs/contributing.md).
-
-### Anki Contributors
-
-[CONTRIBUTORS](./CONTRIBUTORS)
-
-# License
-
-Anki's license: [LICENSE](./LICENSE)
+This is my personal fork of [Anki](https://github.com/ankitects/anki). Anki has a nice [feature](https://docs.ankiweb.net/templates/fields.html#checking-your-answer) that lets you type in your answer, and then highlights any errors you made. This is great for language learning, but one thing I also use it for is remembering keyboard shortcuts. In [Doom Emacs](https://github.com/doomemacs/doomemacs) and in [my vimrc](https://github.com/quunnb/dotfiles/blob/main/.vim/vimrc) a leader key is used to prefix all kinds of useful shortcuts, and that leader key is space. Unfortunately, and perhaps reasonably, Anki trims all whitespace from the answer it expects, so on the answer card all the inputted leading space characters are shown as errors. This "build" fixes that. Related tests are commented out so that all tests continue to pass.
