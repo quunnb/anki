@@ -1,0 +1,52 @@
+name: Apply upstream + whitespace patch
+on:
+  schedule:
+    - cron: '0 0 * * *'   # daily
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Configure git
+        run: |
+          git config user.name "quunnb"
+          git config user.email "quunnb@amideus.fi"
+
+      - name: Add upstream remote and fetch
+        run: |
+          git remote add upstream https://github.com/ankitects/anki.git
+          git fetch --no-tags --prune upstream +refs/heads/*:refs/remotes/upstream/*
+
+      - name: Create branch from upstream
+        run: |
+          git checkout -B upstream-main upstream/main
+
+      - name: Apply patch
+        run: |
+          git reset --hard upstream-main
+          git checkout main -- patches/whitespace.patch
+          git apply --index patches/whitespace.patch
+          if ! git diff --quiet --cached; then
+            git commit -m "Apply whitespace patch on top of upstream @ $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          else
+            echo "Patch produces no changes; aborting."
+            exit 0
+          fi
+
+      - name: Push result to fork
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git fetch origin main
+          git rebase origin/main
+          git push --force-with-lease origin HEAD:main
